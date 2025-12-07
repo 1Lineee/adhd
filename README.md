@@ -8,12 +8,15 @@
     #gameArea, #gameCanvas { display: none; }
     #gameArea {
       position: relative;
-      width: 600px;
-      height: 520px;
+      width: 90%;
+      max-width: 800px;
+      height: 80vh;
+      max-height: 800px;
+      min-height: 500px;
       background: #444;
       border-radius: 10px;
       overflow: hidden;
-      margin: 20px auto 0 auto;
+      margin: 2vh auto 0 auto;
       box-shadow: 0 2px 30px #000b;
     }
     #ball, #dot {
@@ -86,9 +89,13 @@
       border-radius: 8px;
       box-shadow: 0 2px 30px #000b;
       position: relative;
-      top: 10px;
-      width: 100%;
-      height: calc(100vh - 60px);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 95%;
+      height: 90%;
+      max-width: 95%;
+      max-height: 90%;
     }
     #excelBtn {
       position: fixed; top: 10px; right: 10px; padding: 10px 18px;
@@ -1696,3 +1703,4 @@
   </script>
 </body>
 </html>
+
