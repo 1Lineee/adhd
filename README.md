@@ -293,31 +293,7 @@
     </div>
     
     <div class="section">
-      <h3 style="color: #4fc3f7;">Section 3: Frustration Response (Emotional Dysregulation)</h3>
-      <div class="metric">
-        <h4>Post-Penalty RT Delta</h4>
-        <p><strong>What it Measures:</strong> Change in reaction time after a frustration event.</p>
-        <p><strong>ADHD Indicator (≤ -150ms):</strong> Significant slowing after negative feedback.</p>
-        <p><strong>Real-World Meaning:</strong> Becomes upset and performance drops after criticism.</p>
-      </div>
-      
-      <div class="metric">
-        <h4>Window Downgrade Rate</h4>
-        <p><strong>What it Measures:</strong> How often player switches to easier goals after failure.</p>
-        <p><strong>ADHD Indicator (≥ 65%):</strong> Gives up on challenging tasks quickly.</p>
-        <p><strong>Real-World Meaning:</strong> Avoids difficult tasks after initial failure.</p>
-      </div>
-      
-      <div class="metric">
-        <h4>Error Chaining</h4>
-        <p><strong>What it Measures:</strong> Additional errors made after frustration events.</p>
-        <p><strong>ADHD Indicator (≥ 40%):</strong> One negative event triggers multiple mistakes.</p>
-        <p><strong>Real-World Meaning:</strong> Small setbacks ruin entire tasks or activities.</p>
-      </div>
-    </div>
-    
-    <div class="section">
-      <h3 style="color: #4fc3f7;">Section 4: Reaction Time Profile (Cognitive Consistency)</h3>
+      <h3 style="color: #4fc3f7;">Section 3: Reaction Time Profile (Cognitive Consistency)</h3>
       <div class="metric">
         <h4>RT Standard Deviation</h4>
         <p><strong>What it Measures:</strong> Variability in reaction times.</p>
@@ -1611,12 +1587,7 @@
             omissionRate: calculateOmissionRate(),
             redCaptureRate: calculateRedCaptureRate(),
 
-            // Section 3: Frustration Response
-            postPenaltyRTDelta: calculatePostPenaltyRTDelta(),
-            windowDowngradeRate: calculateWindowDowngradeRate(),
-            errorChaining: calculateErrorChaining(),
-
-            // Section 4: Reaction Time Profile
+            // Section 3: Reaction Time Profile
             rtStandardDev: calculateRTStandardDev(),
             lateWindowEntries: calculateLateWindowEntries(),
             rtSkewness: calculateRTSkewness()
