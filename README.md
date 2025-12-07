@@ -16,8 +16,11 @@
       background: #444;
       border-radius: 10px;
       overflow: hidden;
-      margin: 2vh auto 0 auto;
+      margin: 10px auto;
       box-shadow: 0 2px 30px #000b;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     #ball, #dot {
       position: absolute;
@@ -88,14 +91,10 @@
       margin: 0 auto;
       border-radius: 8px;
       box-shadow: 0 2px 30px #000b;
-      position: relative;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 95%;
-      height: 90%;
-      max-width: 95%;
-      max-height: 90%;
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
     }
     #excelBtn {
       position: fixed; top: 10px; right: 10px; padding: 10px 18px;
@@ -1218,13 +1217,7 @@
           ["Omission Rate (≥ 30%)", "≥ 30%", "Inattention and mind-wandering"],
           ["Red Capture Rate (≤ 65%)", "≤ 65%", "Poor sustained attention"],
           [""],
-          ["Section 3: Frustration Response (Emotional Dysregulation)"],
-          ["Metric", "ADHD Indicator", "Interpretation"],
-          ["Post-Penalty RT Delta (≤ -150ms)", "≤ -150ms", "Easily frustrated by setbacks"],
-          ["Window Downgrade Rate (≥ 65%)", "≥ 65%", "Gives up on challenges"],
-          ["Error Chaining (≥ 40%)", "≥ 40%", "One negative event triggers multiple mistakes"],
-          [""],
-          ["Section 4: Reaction Time Profile (Cognitive Consistency)"],
+          ["Section 3: Reaction Time Profile (Cognitive Consistency)"],
           ["Metric", "ADHD Indicator", "Interpretation"],
           ["RT Standard Deviation (≥ 130ms)", "≥ 130ms", "Inconsistent attention state"],
           ["Late Window Entries (≥ 25%)", "≥ 25%", "Poor timing and planning"],
@@ -1232,13 +1225,13 @@
           [""],
           ["Overall Interpretation"],
           ["Score", "Interpretation"],
-          ["15/22 or higher", "Strong indication of ADHD-related traits"],
-          ["11-14/22", "Moderate indication"],
-          ["Below 11", "Few ADHD-related traits detected"],
+          ["12/19 or higher", "Strong indication of ADHD-related traits"],
+          ["8-11/19", "Moderate indication"],
+          ["Below 8", "Few ADHD-related traits detected"],
           [""],
           ["Profile Patterns"],
-          ["High Scores in Section 1 & 4", "Impulsive/Hyperactive profile"],
-          ["High Scores in Section 2 & 4", "Inattentive profile"],
+          ["High Scores in Section 1 & 3", "Impulsive/Hyperactive profile"],
+          ["High Scores in Section 2 & 3", "Inattentive profile"],
           ["High Scores across all sections", "Combined profile"]
         ];
 
@@ -1364,108 +1357,6 @@
             interpretation: rate <= 65 ? 
                 "Low capture rate - difficulty sustaining attention" : 
                 "Good sustained attention"
-        };
-    }
-
-    function calculatePostPenaltyRTDelta() {
-        const frustrationTrials = window.trialData2.filter(trial => trial.frustration_event);
-        if (frustrationTrials.length === 0) {
-            return {
-                value: "N/A",
-                threshold: "≤ -150ms",
-                isAdhd: false,
-                interpretation: "No frustration events recorded"
-            };
-        }
-        
-        const totalDelta = frustrationTrials.reduce((sum, trial) => {
-            return sum + (trial.reaction_time || 0);
-        }, 0);
-        const avgDelta = totalDelta / frustrationTrials.length;
-        
-        return {
-            value: avgDelta.toFixed(1) + 'ms',
-            threshold: "≤ -150ms",
-            isAdhd: avgDelta <= -150,
-            interpretation: avgDelta <= -150 ? 
-                "Significant slowing after penalty - frustration sensitivity" : 
-                "Stable performance after penalty"
-        };
-    }
-
-    function calculateWindowDowngradeRate() {
-        const trials = window.trialData2.filter(trial => trial.window_chosen);
-        if (trials.length < 2) {
-            return {
-                value: "N/A",
-                threshold: "≥ 65%",
-                isAdhd: false,
-                interpretation: "Insufficient data"
-            };
-        }
-        
-        let downgrades = 0;
-        for (let i = 1; i < trials.length; i++) {
-            if (trials[i].window_chosen < trials[i-1].window_chosen) {
-                downgrades++;
-            }
-        }
-        
-        const rate = (downgrades / (trials.length - 1)) * 100;
-        
-        return {
-            value: rate.toFixed(1) + '%',
-            threshold: "≥ 65%",
-            isAdhd: rate >= 65,
-            interpretation: rate >= 65 ? 
-                "Frequent goal reduction after failure" : 
-                "Maintains goals after setbacks"
-        };
-    }
-
-    function calculateErrorChaining() {
-        const trials = window.trialData2;
-        if (trials.length < 3) {
-            return {
-                value: "N/A",
-                threshold: "≥ 40%",
-                isAdhd: false,
-                interpretation: "Insufficient data"
-            };
-        }
-        
-        let errorChains = 0;
-        let totalErrors = 0;
-        
-        for (let i = 1; i < trials.length; i++) {
-            const prevTrial = trials[i-1];
-            const currTrial = trials[i];
-            
-            const prevError = (prevTrial.red_asteroids_presented > 0 && 
-                              (prevTrial.red_asteroids_clicked || 0) === 0) || 
-                             (prevTrial.blue_asteroids_clicked || 0) > 0;
-            
-            if (prevError) {
-                totalErrors++;
-                const currError = (currTrial.red_asteroids_presented > 0 && 
-                                  (currTrial.red_asteroids_clicked || 0) === 0) || 
-                                 (currTrial.blue_asteroids_clicked || 0) > 0;
-                
-                if (currError) {
-                    errorChains++;
-                }
-            }
-        }
-        
-        const rate = totalErrors > 0 ? (errorChains / totalErrors) * 100 : 0;
-        
-        return {
-            value: rate.toFixed(1) + '%',
-            threshold: "≥ 40%",
-            isAdhd: rate >= 40,
-            interpretation: rate >= 40 ? 
-                "Errors tend to occur in sequence" : 
-                "Able to recover after errors"
         };
     }
 
